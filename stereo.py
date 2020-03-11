@@ -70,33 +70,15 @@ def main():
     mask = disp > disp.min()
     out_points = points[mask]
     out_colors = colors[mask]
-    out_fn = 'out.ply'
+    out_fn = 'Aloe 3D cloud.ply'
     write_ply(out_fn, out_points, out_colors)
     print('%s saved' % out_fn)
 
+    cv2.imshow("Left image", imgL)
+    cv2.imshow("Disparity", (disp-min_disp)/num_disp)
+    cv2.waitKey()
 
-
-
-
-
-
-
-
-
-
-    
-    
-    
-
-
-
-
-
-
-
-
-
-    
+    print("Transaction Completed...")
     
 
 
