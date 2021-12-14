@@ -366,7 +366,7 @@ class _Connection(object):
                 result.set_result(None)
                 return
 
-            packet = msg.packet_pb2.Packet.FromString(data)
+            packet = packet_pb2.Packet.FromString(data)
             result.set_result(packet)
         except Exception as e:
             result.set_exception(e)
@@ -425,7 +425,7 @@ class _Connection(object):
             return
 
     def write_packet(self, name, message):
-        packet = msg.packet_pb2.Packet()
+        packet = packet_pb2.Packet()
         cur_time = time.time()
         packet.stamp.sec = int(cur_time)
         packet.stamp.nsec = int(math.fmod(cur_time, 1) * 1e9)
@@ -519,7 +519,7 @@ class Manager(object):
         if topic_name in self._subscribers:
             raise RuntimeError('multiple subscribers for: ' + topic_name)
 
-        to_send = msg.subscribe_pb2.Subscribe()
+        to_send = subscribe_pb2.Subscribe()
         to_send.topic = topic_name
         to_send.msg_type = msg_type
         to_send.host = self._server.local_host
@@ -584,7 +584,7 @@ class Manager(object):
                 raise ParseError('unexpected initialization packet: ' +
                                  initData.type)
             self._handle_version_init(
-                msg.gz_string_pb2.GzString.FromString(
+                gz_string_pb2.GzString.FromString(
                     initData.serialized_data))
 
             future = self._master.read()
@@ -605,7 +605,7 @@ class Manager(object):
                 raise ParseError('unexpected namespaces init packet: ' +
                                  namespacesData.type)
             self._handle_topic_namespaces_init(
-                msg.gz_string_v_pb2.GzString_V.FromString(
+                gz_string_v_pb2.GzString_V.FromString(
                     namespacesData.serialized_data))
 
             future = self._master.read()
@@ -622,7 +622,7 @@ class Manager(object):
                 raise ParseError('unexpected publishers init packet: ' +
                                  publishersData.type)
             self._handle_publishers_init(
-                msg.publishers_pb2.Publishers.FromString(
+                publishers_pb2.Publishers.FromString(
                     publishersData.serialized_data))
 
             logger.debug('Connection: initialized!')
